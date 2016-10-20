@@ -1,0 +1,166 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.yaml:snakeyaml:1.6"
+    }
+}
+
+apply plugin: 'java'
+
+repositories {
+    maven {
+        url "http://dl.bintray.com/ihmcrobotics/maven-vendor"
+    }
+
+    maven {
+        url "http://dl.bintray.com/ihmcrobotics/maven-release"
+    }
+
+    maven {
+        url "https://github.com/rosjava/rosjava_mvn_repo/raw/master"
+    }
+
+    maven {
+        url "http://clojars.org/repo/"
+    }
+
+    maven {
+        url "https://bengal.ihmc.us/nexus/content/repositories/thirdparty"
+    }
+
+    maven {
+        url 'http://updates.jmonkeyengine.org/maven'
+    }
+
+    mavenLocal()
+
+    jcenter()
+
+    mavenCentral()
+}
+
+/*
+ * Disable all of the tasks on the subproject so that invoking gradle commands on this project are quicker.
+ * Because integration with the subproject is optional and is achieved using a GradleBuild type task, we
+ * don't need to run the tasks here. We invoke them from the buildSourceProject.
+ *
+ * Also grabs a reference to the top level project of all the subprojects so we can get at its build script
+ * later.
+ */
+subprojects { subproject ->
+    rootProject.configure(subproject, {
+        subproject.tasks.each {task ->
+            task.enabled = false
+        }
+    })
+
+    if(subproject.getParent().equals(rootProject)) {
+        rootProject.ext.set("sourceProject", subproject)
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10'
+}
+
+import us.ihmc.ros.java_adapter.yaml.IHMCROSJavaYamlLoader
+
+task parseYaml {
+    if(!project.hasProperty("yaml")) {
+        return
+    }
+    project.ext.configHolder = new IHMCROSJavaYamlLoader().loadYaml(project.yaml)
+    configurations.create("ros")
+
+    project.configHolder.dependencyHolder.dependencies.each { dep ->
+        def gavStrings = dep.split(":")
+        def group = gavStrings[0];
+        def artifact = gavStrings[1];
+        def version = gavStrings[2];
+
+        if(project.hasProperty("useLocal") && project.useLocal.toLowerCase().equals("true"))
+        {
+            if(group.equals("us.ihmc")) {
+                version = "LOCAL"
+            }
+        }
+
+        def dependencyString = "${group}:${artifact}:${version}"
+
+        project.dependencies.add("ros", dependencyString)
+    }
+}
+
+task warmUp(dependsOn: parseYaml) {
+    configurations.ros.resolve()
+}
+
+task runJava(type: GradleBuild) {
+    buildFile "build.gradle"
+    def allTasks = new ArrayList<String>()
+
+    if(project.hasProperty("useLocal") && project.useLocal.toLowerCase().equals("true")) {
+        allTasks.add("buildSourceProject")
+    }
+
+    allTasks.add("runJavaDelegate")
+
+    startParameter gradle.startParameter
+
+    tasks = allTasks
+}
+
+task runJavaDelegate(type: JavaExec, dependsOn: parseYaml) {
+    if(!project.hasProperty("yaml")) {
+        return
+    }
+    ignoreExitValue = true
+    classpath = configurations.ros
+    workingDir = project.projectDir
+
+    def heapSizeFromYaml = project.configHolder.vmConfiguration.heapSize
+    if(heapSizeFromYaml != null)
+    {
+        maxHeapSize = heapSizeFromYaml
+    }
+
+    main = project.configHolder.vmConfiguration.mainMethod
+    System.properties.each { property ->
+        if((property.key as String).startsWith("us.ihmc")) {
+            systemProperties[property.key as String] = property.value
+        }
+    }
+    args = []
+    if(project.hasProperty("programArgs")) {
+        args project.programArgs.split(",")
+    }
+    else {
+        String[] argArray = new String[project.configHolder.programArguments.size()]
+        argArray = project.configHolder.programArguments.toArray(argArray)
+        args argArray
+    }
+}
+
+task buildSourceProject(type: GradleBuild) {
+    if(subprojects.empty)
+    {
+        return
+    }
+    buildFile = rootProject.sourceProject.buildFile
+    tasks = ['publishAllToMavenLocal']
+}
+
+parseYaml.mustRunAfter buildSourceProject
+
+gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
+    if(graph.hasTask(parseYaml) && !project.hasProperty("yaml")) {
+        throw new GradleException("Attempting to use the Java execution adapter without setting the yaml location property. Please set the project property \"yaml\" to the location of the yaml configuration.\nFor more information on Gradle properties see https://docs.gradle.org/current/userguide/build_environment.html")
+    }
+
+    if(graph.hasTask(buildSourceProject) && subprojects.empty) {
+        throw new GradleException("Cannot build local source project, no subprojects are configured. Please set the IHMC_SOURCE_LOCATION environment variable.")
+    }
+}
