@@ -1,7 +1,7 @@
-From 6d522d6a18f36306e7e5d7d8a2a03d36d7d81ac4 Mon Sep 17 00:00:00 2001
+From a1e124d9b7efa2530c09f4960e59ea8f12028ba9 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Carlos=20Ag=C3=BCero?= <cen.aguero@gmail.com>
 Date: Thu, 20 Oct 2016 15:40:31 -0700
-Subject: [PATCH] Add FILES_MATCHING to the install rule
+Subject: [PATCH 1/2] Add FILES_MATCHING to the install rule
 
 ---
  CMakeLists.txt | 9 +++++----
