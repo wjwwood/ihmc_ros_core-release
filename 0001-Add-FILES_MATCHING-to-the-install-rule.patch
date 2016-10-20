@@ -1,0 +1,32 @@
+From 6d522d6a18f36306e7e5d7d8a2a03d36d7d81ac4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlos=20Ag=C3=BCero?= <cen.aguero@gmail.com>
+Date: Thu, 20 Oct 2016 15:40:31 -0700
+Subject: [PATCH] Add FILES_MATCHING to the install rule
+
+---
+ CMakeLists.txt | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2fb6816..de5f600 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -14,10 +14,11 @@ catkin_package(
+ 
+ install(DIRECTORY .
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+-  PATTERN "*.gradle"
+-  PATTERN "gradle/*"
+-  PATTERN "buildSrc/*"
+-  PATTERN "gradlew"
++  FILES_MATCHING
++    PATTERN "*.gradle"
++    PATTERN "gradle/*"
++    PATTERN "buildSrc/*"
++    PATTERN "gradlew"
+   PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                     GROUP_EXECUTE GROUP_READ
+ )
+-- 
+2.7.4
+
