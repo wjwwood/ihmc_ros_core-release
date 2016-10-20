@@ -1,4 +1,4 @@
-From 0b357e6531196c6f70a05b975f586bc7158e6d69 Mon Sep 17 00:00:00 2001
+From a673ba89c4a41fa99c0ed1878dda7332e193ff02 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Carlos=20Ag=C3=BCero?= <cen.aguero@gmail.com>
 Date: Thu, 20 Oct 2016 13:27:30 -0700
 Subject: [PATCH] Add geometry_msgs dependency
