@@ -1,0 +1,12 @@
+Source: ros-indigo-ihmc-ros-core
+Section: misc
+Priority: extra
+Maintainer: Doug Stephen <dstephen@ihmc.us>
+Build-Depends: debhelper (>= 9.0.0), ros-indigo-catkin
+Homepage: http://github.com/ihmcrobotics/ihmc_ros_core
+Standards-Version: 3.9.2
+
+Package: ros-indigo-ihmc-ros-core
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, 
+Description: The ihmc_ros package contains several ROS packages for interacting with the IHMC Whole Body Controller for humanoid robots.
