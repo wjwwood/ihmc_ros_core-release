@@ -14,10 +14,11 @@ catkin_package(
 
 install(DIRECTORY .
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-  PATTERN "*.gradle"
-  PATTERN "gradle/*"
-  PATTERN "buildSrc/*"
-  PATTERN "gradlew"
+  FILES_MATCHING
+    PATTERN "*.gradle"
+    PATTERN "gradle/*"
+    PATTERN "buildSrc/*"
+    PATTERN "gradlew"
   PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
                     GROUP_EXECUTE GROUP_READ
 )
