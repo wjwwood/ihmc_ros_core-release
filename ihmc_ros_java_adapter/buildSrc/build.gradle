@@ -1,0 +1,10 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile localGroovy()
+    compile "org.yaml:snakeyaml:1.6"
+}
