@@ -1,0 +1,32 @@
+From 4055d3c6260f4ccca2cb181105cfacaa8fe43a33 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Carlos=20Ag=C3=BCero?= <cen.aguero@gmail.com>
+Date: Fri, 21 Oct 2016 16:57:06 -0700
+Subject: [PATCH 5/5] Making gradlew executable
+
+---
+ CMakeLists.txt | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9f2c365..db890f9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -12,10 +12,14 @@ catkin_package(
+ install(FILES
+   build.gradle
+   settings.gradle
+-  gradlew
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
+ 
++install(PROGRAMS
++ gradlew
++ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
++)
++
+ install(DIRECTORY gradle
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
+-- 
+2.7.4
+
