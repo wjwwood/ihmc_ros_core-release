@@ -9,17 +9,9 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
-install(FILES
-  build.gradle
-  settings.gradle
-  gradlew
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
 install(DIRECTORY gradle
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
-
 install(DIRECTORY buildSrc
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
