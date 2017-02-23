@@ -1,0 +1,33 @@
+From c5cb8e7ce6b9456add8dbd86ca086cee669526f2 Mon Sep 17 00:00:00 2001
+From: Jose Luis Rivero <jrivero@osrfoundation.org>
+Date: Thu, 23 Feb 2017 14:41:41 +0100
+Subject: [PATCH 06/10] Revert "Making gradlew executable"
+
+This reverts commit bb237a572c19e4b7a1e81fd28bdf641b15a54403.
+---
+ CMakeLists.txt | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index db890f9..9f2c365 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -12,14 +12,10 @@ catkin_package(
+ install(FILES
+   build.gradle
+   settings.gradle
++  gradlew
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
+ 
+-install(PROGRAMS
+- gradlew
+- DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+-)
+-
+ install(DIRECTORY gradle
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
+-- 
+2.9.0
+

@@ -1,0 +1,32 @@
+From e94fa270d18b92fabe4d28c5c0e0df3ee9226d2b Mon Sep 17 00:00:00 2001
+From: Jose Luis Rivero <jrivero@osrfoundation.org>
+Date: Thu, 23 Feb 2017 14:42:28 +0100
+Subject: [PATCH 08/10] Revert "Tweak install directory"
+
+This reverts commit ae2feea55b5c2bd48669c6e1b83b3349f0457930.
+---
+ CMakeLists.txt | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5d8e191..fce2f3b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -8,7 +8,13 @@ catkin_package(
+ #  CATKIN_DEPENDS std_msgs
+ #  DEPENDS system_lib
+ )
+-
++install(DIRECTORY .
++  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
++  FILES_MATCHING PATTERN "*.gradle"
++                 PATTERN "gradlew"
++  PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
++                    GROUP_EXECUTE GROUP_READ
++)
+ install(DIRECTORY gradle
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
+-- 
+2.9.0
+

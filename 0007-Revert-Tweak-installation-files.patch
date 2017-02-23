@@ -1,0 +1,35 @@
+From 55084fd60a619766fefe9167bf75ce48be87638c Mon Sep 17 00:00:00 2001
+From: Jose Luis Rivero <jrivero@osrfoundation.org>
+Date: Thu, 23 Feb 2017 14:42:27 +0100
+Subject: [PATCH 07/10] Revert "Tweak installation files"
+
+This reverts commit 3cd8624a8908f7e303454237faf73c77200547f1.
+---
+ CMakeLists.txt | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9f2c365..5d8e191 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -9,17 +9,9 @@ catkin_package(
+ #  DEPENDS system_lib
+ )
+ 
+-install(FILES
+-  build.gradle
+-  settings.gradle
+-  gradlew
+-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+-)
+-
+ install(DIRECTORY gradle
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
+-
+ install(DIRECTORY buildSrc
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
+-- 
+2.9.0
+

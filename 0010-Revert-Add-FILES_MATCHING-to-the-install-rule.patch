@@ -1,0 +1,33 @@
+From 9d59d7a6269ce04be2abf543a7f87a6394342f83 Mon Sep 17 00:00:00 2001
+From: Jose Luis Rivero <jrivero@osrfoundation.org>
+Date: Thu, 23 Feb 2017 14:42:30 +0100
+Subject: [PATCH 10/10] Revert "Add FILES_MATCHING to the install rule"
+
+This reverts commit 30cb7d154e8df22406fdd970dccf7eabc8d605ed.
+---
+ CMakeLists.txt | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index de5f600..2fb6816 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -14,11 +14,10 @@ catkin_package(
+ 
+ install(DIRECTORY .
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+-  FILES_MATCHING
+-    PATTERN "*.gradle"
+-    PATTERN "gradle/*"
+-    PATTERN "buildSrc/*"
+-    PATTERN "gradlew"
++  PATTERN "*.gradle"
++  PATTERN "gradle/*"
++  PATTERN "buildSrc/*"
++  PATTERN "gradlew"
+   PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                     GROUP_EXECUTE GROUP_READ
+ )
+-- 
+2.9.0
+
